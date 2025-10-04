@@ -1,0 +1,46 @@
+# .github/workflows/caching-workflow.yml
+name: Caching Demo Workflow
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-and-cache:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Sets up Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 3. This is the caching step!
+      - name: Cache node modules
+        id: cache-npm # Give the step an ID to reference its output later
+        uses: actions/cache@v4
+        with:
+          # The path to the directory we want to cache
+          path: ~/.npm
+          # The unique key for the cache.
+          # We are using the exact key you requested.
+          key: cache-90ee214
+
+      # 4. This is the custom step to check if the cache was hit
+      - name: prime-cache-90ee214
+        run: echo "Cache hit status: ${{ steps.cache-npm.outputs.cache-hit }}"
+
+      # 5. Install dependencies using npm.
+      # If the cache was restored, this step will be much faster.
+      - name: Install Dependencies
+        run: npm install
