@@ -1,0 +1,8 @@
+{
+  "name": "caching-demo",
+  "version": "1.0.0",
+  "description": "A demo for GitHub Actions caching",
+  "dependencies": {
+    "cowsay": "^1.5.0"
+  }
+}
